@@ -25,8 +25,8 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
         sudo \
         netbase \
         locales \
-		wget \
-		iputils-ping \
+	wget \
+	iputils-ping \
  && rm -rf /var/lib/apt/lists/*
 
 RUN echo "fr_FR.UTF-8 UTF-8" > /etc/locale.gen \
@@ -71,7 +71,7 @@ RUN pip install mobilechelonian \
     metakernel \
     pillow \
     nbautoeval \
-	jupyterlab \
+    jupyterlab \
     jupyterlab-server \
     jupyter_contrib_nbextensions
 
