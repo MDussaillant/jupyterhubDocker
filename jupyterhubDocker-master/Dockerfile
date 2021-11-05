@@ -1,7 +1,5 @@
 FROM jupyterhub/jupyterhub
 
-LABEL maintainer="Olivier Lecluse <olivier.lecluse@free.fr>"
-
 USER root
 
 ARG JH_ADMIN=adminjh
