@@ -77,9 +77,16 @@ RUN pip install mobilechelonian \
 
 RUN jupyter contrib nbextension install --sys-prefix
 
-RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda.sh && \
-	bash /opt/miniconda.sh -b -p && \
-	chmod 777 /root/
+# install Python + NodeJS with conda
+RUN wget -q https://repo.continuum.io/miniconda/Miniconda3-4.5.1-Linux-x86_64.sh -O /tmp/miniconda.sh  && \
+    echo '0c28787e3126238df24c5d4858bd0744 */tmp/miniconda.sh' | md5sum -c - && \
+    bash /tmp/miniconda.sh -f -b -p /opt/conda && \
+    /opt/conda/bin/conda install --yes -c conda-forge \
+      python=3.6 sqlalchemy tornado jinja2 traitlets requests pip pycurl \
+      nodejs configurable-http-proxy && \
+    /opt/conda/bin/pip install --upgrade pip && \
+    rm /tmp/miniconda.sh
+ENV PATH=/opt/conda/bin:$PATH
 
 # Creation des exemples
 
