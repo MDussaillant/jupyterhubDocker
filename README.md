@@ -29,6 +29,8 @@ N'oubliez pas le . à la fin de la seconde commande !
 4. Lancez votre image
 ```console
 docker run -i -p8000:8000 --name jupyterhub jhub_srv
+docker run --name jhub100 -p 15443:8000 -v C:\Users\mathi\jupyterhubDocker-master\home:/home jhub_srv11  
+docker run --name jhub93 -p 8000:8000 mdussaillant2/jupyterimg3:0.9 
 ```
 
 Le serveur **jupyterhub** est à présent opérationnel. Ouvrez un navigateur et allez à l'adresse
