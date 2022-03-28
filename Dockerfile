@@ -1,4 +1,4 @@
-FROM jupyterhub/jupyterhub
+FROM jupyterhub/jupyterhub:0.9
 
 USER root
 
@@ -45,9 +45,8 @@ RUN useradd $JH_ADMIN --create-home --shell /bin/bash
 
 COPY jupyterhub_config.py /srv/jupyterhub/
 
-RUN mkdir -p /home/$JH_ADMIN/.jupyter && \
-    mkdir /home/$JH_ADMIN/source
-COPY header.ipynb /home/$JH_ADMIN/source
+RUN mkdir -p /home/$JH_ADMIN/.jupyter
+
 RUN chown -R $JH_ADMIN /home/$JH_ADMIN && \
     chmod 700 /home/$JH_ADMIN
 
@@ -73,37 +72,28 @@ RUN pip install mobilechelonian \
     nbautoeval \
     jupyterlab \
     jupyterlab-server \
-    jupyter_contrib_nbextensions
+    jupyter_contrib_nbextensions \
+	jupyterhub-ldapauthenticator==1.3.0
 
 RUN jupyter contrib nbextension install --sys-prefix
 
-# install Python + NodeJS with conda
-RUN wget -q https://repo.continuum.io/miniconda/Miniconda3-4.5.1-Linux-x86_64.sh -O /tmp/miniconda.sh  && \
-    echo '0c28787e3126238df24c5d4858bd0744 */tmp/miniconda.sh' | md5sum -c - && \
-    bash /tmp/miniconda.sh -f -b -p /opt/conda && \
-    /opt/conda/bin/conda install --yes -c conda-forge \
-      python=3.6 sqlalchemy tornado jinja2 traitlets requests pip pycurl \
-      nodejs configurable-http-proxy && \
-    /opt/conda/bin/pip install --upgrade pip && \
-    rm /tmp/miniconda.sh
-ENV PATH=/opt/conda/bin:$PATH
+# Install miniconda
+#ENV CONDA_DIR /opt/conda
+#RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh -O ~/miniconda.sh && \
+ #    /bin/bash ~/miniconda.sh -b -p /opt/conda
 
-# Creation des exemples
+# Put conda in path so we can use conda activate
+#ENV PATH=$CONDA_DIR/bin:$PATH
 
-COPY --chown=1000 exemples /home/$JH_ADMIN/exemples
+#RUN sed -i 's/PATH="/PATH="\/opt\/conda\/bin:/g' /etc/environment
+
+
 
 # Dossier feedback
 RUN mkdir /srv/feedback && \
     chmod 4777 /srv/feedback
 
-# Creation des comptes
-COPY comptes.csv /root
-COPY import_comptes.sh /usr/bin
-COPY killJup.sh /usr/bin
-COPY checkmem.sh /usr/bin
-COPY home /home/
-RUN chmod 755 /usr/bin/*.sh
-RUN /usr/bin/import_comptes.sh /root/comptes.csv
+
 
 
 EXPOSE 8000
