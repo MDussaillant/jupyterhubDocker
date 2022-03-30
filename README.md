@@ -7,7 +7,7 @@
 La procédure d'installation est la suivante :
 1. Récupérez le matériel nécessaire à la fabrication de l'image Docker
 ```console
-git clone https://github.com/MDussaillant/jupyterhubDocker.git
+git clone https://github.com/MDussaillant/jupyterhubDocker2.git
 ```
 2. Installez docker sur votre machine. Sous linux, tapez simplement
 ```console
